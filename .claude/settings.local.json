@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find D:/Others/CD/My_Portfolio/my-app/node_modules/next/dist/docs/01-app -name *middleware* -o -name *auth*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(node -e \"const l = require\\(''lucide-react''\\); const names = Object.keys\\(l\\).filter\\(k => k[0] === k[0].toUpperCase\\(\\) && typeof l[k] === ''object''\\); const matches = names.filter\\(n => /github|linkedin|twitter/i.test\\(n\\)\\); console.log\\(matches.length ? matches.join\\('', ''\\) : ''Not found''\\); console.log\\(''---''\\); console.log\\(names.filter\\(n => /git/i.test\\(n\\)\\).join\\('', ''\\)\\); console.log\\(names.filter\\(n => /link/i.test\\(n\\)\\).join\\('', ''\\)\\);\")",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
