@@ -10,18 +10,44 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-background px-6">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-background px-6">
+      {/* Background orbs */}
+      <div
+        className="hero-orb"
+        style={{
+          width: "400px",
+          height: "400px",
+          top: "20%",
+          left: "10%",
+          background: "linear-gradient(135deg, var(--gradient-start), var(--gradient-mid))",
+        }}
+      />
+      <div
+        className="hero-orb"
+        style={{
+          width: "300px",
+          height: "300px",
+          bottom: "20%",
+          right: "15%",
+          background: "linear-gradient(135deg, var(--gradient-mid), var(--gradient-end))",
+          animationDelay: "-7s",
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-sm">
         <div className="mb-8 text-center">
+          <p className="mb-4 text-2xl font-bold text-foreground">
+            AT<span className="text-gradient">.</span>
+          </p>
           <h1 className="text-2xl font-bold text-foreground">
-            Welcome back<span className="text-accent">.</span>
+            Welcome back<span className="text-gradient">.</span>
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Sign in to manage your portfolio.
           </p>
         </div>
 
-        <form action={action} className="space-y-4">
+        <form action={action} className="card-elevated space-y-4 p-6 sm:p-8">
           {state.error && (
             <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-400">
               {state.error}
@@ -41,7 +67,7 @@ export default function LoginPage() {
               name="email"
               required
               autoComplete="email"
-              className="h-11 w-full rounded-lg border border-border bg-card px-4 text-sm text-card-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none"
+              className="h-11 w-full rounded-lg border border-border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground"
               placeholder="admin@example.com"
             />
           </div>
@@ -59,7 +85,7 @@ export default function LoginPage() {
               name="password"
               required
               autoComplete="current-password"
-              className="h-11 w-full rounded-lg border border-border bg-card px-4 text-sm text-card-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none"
+              className="h-11 w-full rounded-lg border border-border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground"
               placeholder="••••••••"
             />
           </div>
@@ -67,7 +93,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={pending}
-            className="h-11 w-full rounded-lg bg-accent text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="btn-primary w-full justify-center disabled:opacity-50"
           >
             {pending ? "Signing in..." : "Sign In"}
           </button>
@@ -76,7 +102,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-xs text-muted-foreground">
           <a
             href="/"
-            className="transition-colors hover:text-foreground"
+            className="transition-colors hover:text-accent"
           >
             &larr; Back to portfolio
           </a>

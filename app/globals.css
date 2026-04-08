@@ -1,28 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0a;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
-  --accent: #2563eb;
+  --background: #f8fafc;
+  --foreground: #0c1222;
+  --muted: #f0f4f8;
+  --muted-foreground: #64748b;
+  --border: #dde4ee;
+  --accent: #1e3a8a;
+  --accent-hover: #1e40af;
   --accent-foreground: #ffffff;
+  --accent-glow: rgba(30, 58, 138, 0.12);
   --card: #ffffff;
-  --card-foreground: #0a0a0a;
+  --card-foreground: #0c1222;
+  --gradient-start: #1e3a8a;
+  --gradient-mid: #2563eb;
+  --gradient-end: #3b82f6;
+  --surface: #f1f5f9;
+  --surface-elevated: #ffffff;
+  --shadow-color: 215 20% 15%;
+  --shadow-sm: 0 1px 2px -1px hsl(var(--shadow-color) / 0.06),
+    0 1px 3px 0 hsl(var(--shadow-color) / 0.04);
+  --shadow-md: 0 4px 6px -2px hsl(var(--shadow-color) / 0.06),
+    0 10px 15px -3px hsl(var(--shadow-color) / 0.04);
+  --shadow-lg: 0 10px 25px -5px hsl(var(--shadow-color) / 0.08),
+    0 20px 40px -10px hsl(var(--shadow-color) / 0.04);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-    --muted: #171717;
-    --muted-foreground: #a3a3a3;
-    --border: #262626;
-    --accent: #3b82f6;
-    --accent-foreground: #ffffff;
-    --card: #141414;
-    --card-foreground: #fafafa;
+    --background: #0a0e1a;
+    --foreground: #e2e8f0;
+    --muted: #111827;
+    --muted-foreground: #94a3b8;
+    --border: #1e293b;
+    --accent: #60a5fa;
+    --accent-hover: #93c5fd;
+    --accent-foreground: #0a0e1a;
+    --accent-glow: rgba(96, 165, 250, 0.12);
+    --card: #0f1629;
+    --card-foreground: #e2e8f0;
+    --gradient-start: #3b82f6;
+    --gradient-mid: #60a5fa;
+    --gradient-end: #93c5fd;
+    --surface: #0c1220;
+    --surface-elevated: #131b2e;
+    --shadow-color: 220 30% 5%;
+    --shadow-sm: 0 1px 2px -1px hsl(var(--shadow-color) / 0.3),
+      0 1px 3px 0 hsl(var(--shadow-color) / 0.2);
+    --shadow-md: 0 4px 6px -2px hsl(var(--shadow-color) / 0.3),
+      0 10px 15px -3px hsl(var(--shadow-color) / 0.2);
+    --shadow-lg: 0 10px 25px -5px hsl(var(--shadow-color) / 0.4),
+      0 20px 40px -10px hsl(var(--shadow-color) / 0.2);
   }
 }
 
@@ -33,9 +61,13 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-glow: var(--accent-glow);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -53,4 +85,252 @@ html {
 ::selection {
   background-color: var(--accent);
   color: var(--accent-foreground);
+}
+
+/* ── Gradient utilities ── */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start),
+    var(--gradient-mid),
+    var(--gradient-end)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start),
+    var(--gradient-mid),
+    var(--gradient-end)
+  );
+}
+
+.border-gradient {
+  border-image: linear-gradient(
+      135deg,
+      var(--gradient-start),
+      var(--gradient-end)
+    )
+    1;
+}
+
+/* ── Glow effects ── */
+.glow-accent {
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 60px var(--accent-glow);
+}
+
+.glow-accent-sm {
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ── Scroll-triggered animations ── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.is-visible {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-on-scroll.delay-1 {
+  animation-delay: 0.1s;
+}
+.animate-on-scroll.delay-2 {
+  animation-delay: 0.2s;
+}
+.animate-on-scroll.delay-3 {
+  animation-delay: 0.3s;
+}
+.animate-on-scroll.delay-4 {
+  animation-delay: 0.4s;
+}
+
+/* ── Card styles ── */
+.card-elevated {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ── Hero background animation ── */
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: float 15s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero-orb {
+    opacity: 0.15;
+  }
+}
+
+/* ── Smooth button transitions ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.875rem;
+  padding: 0 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-foreground);
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start),
+    var(--gradient-mid)
+  );
+  box-shadow: 0 2px 8px var(--accent-glow);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.15s ease,
+    opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.875rem;
+  padding: 0 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* ── Tag/badge styles ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--card-foreground);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.badge-accent {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+/* ── Input focus ring ── */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  outline: none;
 }

@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Abdelrhman Tawfek — Portfolio",
+  title: "AbdEl-Rahman Sabry — Portfolio",
   description:
-    "Portfolio of Abdelrhman Tawfek, a full-stack developer specializing in React, Next.js, and Node.js.",
+    "Portfolio of AbdEl-Rahman Sabry, a software engineer specializing in Django, React, Next.js, and PostgreSQL.",
 };
 
 export default function RootLayout({

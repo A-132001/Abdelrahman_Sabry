@@ -33,6 +33,17 @@ export interface Education {
   field: string;
   startYear: number;
   endYear: number | null;
+  description?: string;
+}
+
+export interface Course {
+  id: string;
+  title: string;
+  provider: string;
+  url?: string;
+  completedDate: string;
+  certificateUrl?: string;
+  description?: string;
 }
 
 export interface Skill {

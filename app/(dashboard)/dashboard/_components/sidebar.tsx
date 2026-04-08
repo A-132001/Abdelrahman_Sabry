@@ -12,6 +12,8 @@ import {
   Home,
   Menu,
   X,
+  GraduationCap,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { logoutAction } from "@/app/_lib/actions/auth";
@@ -21,6 +23,8 @@ const navItems = [
   { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/projects", label: "Projects", icon: FolderKanban },
   { href: "/dashboard/experience", label: "Experience", icon: Briefcase },
+  { href: "/dashboard/education", label: "Education", icon: GraduationCap },
+  { href: "/dashboard/courses", label: "Courses", icon: BookOpen },
   { href: "/dashboard/skills", label: "Skills", icon: Wrench },
 ];
 
@@ -33,11 +37,12 @@ export function Sidebar() {
       {/* Mobile top bar */}
       <div className="flex h-14 items-center justify-between border-b border-border bg-card px-4 lg:hidden">
         <Link href="/dashboard" className="text-lg font-bold text-foreground">
-          AT<span className="text-accent">.</span>
+          AT<span className="text-gradient">.</span>
         </Link>
         <button
           type="button"
           onClick={() => setOpen(!open)}
+          className="rounded-lg p-2 text-foreground transition-colors hover:bg-muted"
           aria-label="Toggle sidebar"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
@@ -47,24 +52,22 @@ export function Sidebar() {
       {/* Overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card transition-transform duration-300 lg:static lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-16 items-center px-6">
+        <div className="flex h-16 items-center gap-2 border-b border-border px-6">
           <Link href="/dashboard" className="text-lg font-bold text-foreground">
-            AT<span className="text-accent">.</span>{" "}
-            <span className="text-sm font-normal text-muted-foreground">
-              Dashboard
-            </span>
+            AT<span className="text-gradient">.</span>
           </Link>
+          <span className="badge-accent text-[10px]">Admin</span>
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-4">
@@ -78,9 +81,9 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-accent/10 text-accent"
+                    ? "bg-accent-glow text-accent shadow-sm"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >

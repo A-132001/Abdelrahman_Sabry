@@ -6,6 +6,7 @@ import type {
   Education,
   Skill,
   Project,
+  Course,
 } from "./types";
 import {
   personalInfo as defaultPersonalInfo,
@@ -13,6 +14,7 @@ import {
   education as defaultEducation,
   skills as defaultSkills,
   projects as defaultProjects,
+  courses as defaultCourses,
 } from "./data";
 
 export interface PortfolioData {
@@ -21,6 +23,7 @@ export interface PortfolioData {
   education: Education[];
   skills: Skill[];
   projects: Project[];
+  courses: Course[];
 }
 
 const DATA_FILE = path.join(process.cwd(), "data", "portfolio.json");
@@ -35,6 +38,7 @@ async function ensureDataFile(): Promise<void> {
       education: defaultEducation,
       skills: defaultSkills,
       projects: defaultProjects,
+      courses: defaultCourses,
     };
     await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
     await fs.writeFile(DATA_FILE, JSON.stringify(defaultData, null, 2));

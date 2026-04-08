@@ -4,7 +4,7 @@ import { readData } from "@/app/_lib/store";
 import { ProjectFilters } from "./_components/project-filters";
 
 export const metadata: Metadata = {
-  title: "Projects — Abdelrhman Tawfek",
+  title: "Projects — AbdEl-Rahman Sabry",
   description:
     "Explore the projects I've built — from full-stack web apps to open-source tools.",
 };

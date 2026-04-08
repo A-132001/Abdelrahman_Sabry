@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Code2, ExternalLink } from "lucide-react";
 import type { Project } from "@/app/_lib/types";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5"
-    >
-      {/* Image placeholder */}
-      <div className="relative aspect-video w-full overflow-hidden bg-muted">
-        <div className="flex h-full items-center justify-center text-muted-foreground/40">
+    <div className="group card-elevated flex flex-col overflow-hidden">
+      {/* Image placeholder — clickable to detail */}
+      <Link
+        href={`/projects/${project.slug}`}
+        className="relative aspect-video w-full overflow-hidden bg-muted"
+      >
+        <div className="flex h-full items-center justify-center text-muted-foreground/30">
           <svg
             className="h-12 w-12"
             fill="none"
@@ -27,27 +27,30 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-accent/80 opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="flex items-center gap-1.5 text-sm font-semibold text-accent-foreground">
+        <div className="bg-gradient-accent absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-90">
+          <span className="flex items-center gap-1.5 text-sm font-semibold text-white">
             View Project
             <ArrowUpRight size={16} />
           </span>
         </div>
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
         {project.featured && (
-          <span className="mb-2 inline-flex w-fit rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent">
-            Featured
-          </span>
+          <span className="badge-accent mb-2 w-fit">Featured</span>
         )}
-        <h3 className="text-lg font-semibold text-card-foreground group-hover:text-accent">
+        <Link
+          href={`/projects/${project.slug}`}
+          className="text-lg font-semibold text-card-foreground transition-colors hover:text-accent"
+        >
           {project.title}
-        </h3>
+        </Link>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {project.description}
         </p>
+
+        {/* Tags */}
         <div className="mt-4 flex flex-wrap gap-1.5">
           {project.tags.slice(0, 4).map((tag) => (
             <span
@@ -63,7 +66,35 @@ export function ProjectCard({ project }: { project: Project }) {
             </span>
           )}
         </div>
+
+        {/* Links */}
+        {(project.githubUrl || project.liveUrl) && (
+          <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              >
+                <Code2 size={14} />
+                Source Code
+              </a>
+            )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              >
+                <ExternalLink size={14} />
+                Live Demo
+              </a>
+            )}
+          </div>
+        )}
       </div>
-    </Link>
+    </div>
   );
 }

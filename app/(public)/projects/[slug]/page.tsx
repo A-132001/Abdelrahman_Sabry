@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!project) return { title: "Not Found" };
 
   return {
-    title: `${project.title} — Abdelrhman Tawfek`,
+    title: `${project.title} — AbdEl-Rahman Sabry`,
     description: project.description,
   };
 }
@@ -38,22 +38,20 @@ export default async function ProjectDetailPage({
 
   return (
     <div className="pt-16">
-      <article className="mx-auto max-w-4xl px-6 py-20 sm:py-28">
+      <article className="mx-auto max-w-4xl px-6 py-24 sm:py-32">
         {/* Back link */}
         <Link
           href="/projects"
-          className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="mb-8 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
         >
           <ArrowLeft size={16} />
           Back to Projects
         </Link>
 
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-12">
           {project.featured && (
-            <span className="mb-3 inline-flex rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              Featured
-            </span>
+            <span className="badge-accent mb-3 inline-flex">Featured</span>
           )}
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             {project.title}
@@ -65,10 +63,7 @@ export default async function ProjectDetailPage({
           {/* Tags */}
           <div className="mt-6 flex flex-wrap gap-2">
             {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-lg border border-border bg-card px-3 py-1 text-sm font-medium text-card-foreground"
-              >
+              <span key={tag} className="tag">
                 {tag}
               </span>
             ))}
@@ -81,7 +76,7 @@ export default async function ProjectDetailPage({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+                className="btn-primary"
               >
                 Live Demo
                 <ArrowUpRight size={16} />
@@ -92,7 +87,7 @@ export default async function ProjectDetailPage({
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-11 items-center gap-2 rounded-lg border border-border bg-card px-5 text-sm font-medium text-card-foreground transition-colors hover:border-accent hover:text-accent"
+                className="btn-secondary"
               >
                 <Code2 size={16} />
                 Source Code
@@ -102,8 +97,8 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* Image placeholder */}
-        <div className="mb-12 overflow-hidden rounded-2xl border border-border bg-muted">
-          <div className="flex aspect-video items-center justify-center text-muted-foreground/40">
+        <div className="card-elevated mb-12 overflow-hidden !rounded-2xl">
+          <div className="flex aspect-video items-center justify-center bg-muted text-muted-foreground/30">
             <svg
               className="h-16 w-16"
               fill="none"
@@ -121,9 +116,9 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* Long description */}
-        <div className="prose-custom">
+        <div>
           <h2 className="mb-4 text-2xl font-bold text-foreground">
-            About this project
+            About this project<span className="text-gradient">.</span>
           </h2>
           <p className="text-base leading-relaxed text-muted-foreground">
             {project.longDescription}
@@ -132,7 +127,7 @@ export default async function ProjectDetailPage({
 
         {/* Navigation to other projects */}
         <div className="mt-16 border-t border-border pt-10">
-          <h3 className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+          <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
             Other Projects
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -143,7 +138,7 @@ export default async function ProjectDetailPage({
                 <Link
                   key={p.id}
                   href={`/projects/${p.slug}`}
-                  className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-accent/50"
+                  className="card-elevated p-5"
                 >
                   <h4 className="font-semibold text-card-foreground group-hover:text-accent">
                     {p.title}

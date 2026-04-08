@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, ExternalLink, Code2 } from "lucide-react";
 import { readData } from "@/app/_lib/store";
 import { DeleteProjectButton } from "./_components/delete-button";
 
@@ -52,7 +52,7 @@ export default async function ProjectsManagePage() {
                 <p className="mt-0.5 truncate text-sm text-muted-foreground">
                   {project.description}
                 </p>
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="mt-2 flex flex-wrap items-center gap-1">
                   {project.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
@@ -61,6 +61,31 @@ export default async function ProjectsManagePage() {
                       {tag}
                     </span>
                   ))}
+                  {(project.githubUrl || project.liveUrl) && (
+                    <span className="mx-1 text-border">|</span>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-accent"
+                    >
+                      <Code2 size={12} />
+                      GitHub
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-accent"
+                    >
+                      <ExternalLink size={12} />
+                      Live
+                    </a>
+                  )}
                 </div>
               </div>
               <div className="ml-4 flex items-center gap-2">

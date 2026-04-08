@@ -1,4 +1,4 @@
-import { FolderKanban, Briefcase, Wrench, Eye } from "lucide-react";
+import { FolderKanban, Briefcase, Wrench, Eye, GraduationCap, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { readData } from "@/app/_lib/store";
 
@@ -23,6 +23,18 @@ export default async function DashboardPage() {
       value: data.skills.length,
       icon: Wrench,
       href: "/dashboard/skills",
+    },
+    {
+      label: "Education",
+      value: data.education.length,
+      icon: GraduationCap,
+      href: "/dashboard/education",
+    },
+    {
+      label: "Courses",
+      value: data.courses.length,
+      icon: BookOpen,
+      href: "/dashboard/courses",
     },
     {
       label: "Featured",

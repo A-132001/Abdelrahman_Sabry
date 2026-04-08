@@ -1,3 +1,5 @@
+import { AnimateOnScroll } from "./animate-on-scroll";
+
 interface SectionProps {
   id?: string;
   title?: string;
@@ -14,18 +16,23 @@ export function Section({
   className = "",
 }: SectionProps) {
   return (
-    <section id={id} className={`py-20 sm:py-28 ${className}`}>
+    <section id={id} className={`py-24 sm:py-32 ${className}`}>
       <div className="mx-auto max-w-6xl px-6">
         {title && (
-          <div className="mb-14">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              {title}
-              <span className="text-accent">.</span>
-            </h2>
-            {subtitle && (
-              <p className="mt-3 text-lg text-muted-foreground">{subtitle}</p>
-            )}
-          </div>
+          <AnimateOnScroll>
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                {title}
+                <span className="text-gradient">.</span>
+              </h2>
+              {subtitle && (
+                <p className="mt-3 text-lg text-muted-foreground">
+                  {subtitle}
+                </p>
+              )}
+              <div className="bg-gradient-accent mt-4 h-1 w-12 rounded-full" />
+            </div>
+          </AnimateOnScroll>
         )}
         {children}
       </div>
