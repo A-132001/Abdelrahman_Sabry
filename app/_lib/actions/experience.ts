@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
+import { prisma } from "../prisma";
 import type { Experience } from "../types";
 
 export async function saveExperienceAction(
@@ -31,16 +31,16 @@ export async function saveExperienceAction(
       .filter(Boolean),
   };
 
-  const data = await readData();
-
   if (id) {
-    const index = data.experiences.findIndex((e) => e.id === id);
-    if (index !== -1) data.experiences[index] = entry;
+    await prisma.experience.update({
+      where: { id },
+      data: entry,
+    });
   } else {
-    data.experiences.unshift(entry);
+    await prisma.experience.create({
+      data: entry,
+    });
   }
-
-  await writeData(data);
   revalidatePath("/");
   revalidatePath("/dashboard/experience");
 
@@ -51,9 +51,9 @@ export async function deleteExperienceAction(id: string): Promise<void> {
   const isAuth = await verifySession();
   if (!isAuth) return;
 
-  const data = await readData();
-  data.experiences = data.experiences.filter((e) => e.id !== id);
-  await writeData(data);
+  await prisma.experience.delete({
+    where: { id },
+  });
 
   revalidatePath("/");
   revalidatePath("/dashboard/experience");

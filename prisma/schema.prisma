@@ -1,0 +1,80 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model PersonalInfo {
+  id        String       @id @default(cuid())
+  name      String
+  title     String
+  tagline   String
+  bio       String
+  avatarUrl String
+  resumeUrl String
+  email     String
+  location  String
+  links     SocialLink[]
+}
+
+model SocialLink {
+  id             String       @id @default(cuid())
+  platform       String
+  url            String
+  icon           String
+  personalInfoId String
+  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id], onDelete: Cascade)
+}
+
+model Experience {
+  id          String   @id
+  company     String
+  role        String
+  startDate   String
+  endDate     String?
+  description String
+  highlights  String[]
+}
+
+model Education {
+  id          String   @id
+  institution String
+  degree      String
+  field       String
+  startYear   Int
+  endYear     Int?
+  description String?
+}
+
+model Course {
+  id             String   @id
+  title          String
+  provider       String
+  url            String?
+  completedDate  String
+  certificateUrl String?
+  description    String?
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String @unique
+  category String
+}
+
+model Project {
+  id              String   @id
+  title           String
+  slug            String   @unique
+  description     String
+  longDescription String
+  imageUrl        String
+  tags            String[]
+  liveUrl         String?
+  githubUrl       String?
+  featured        Boolean  @default(false)
+  createdAt       String
+}

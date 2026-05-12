@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
+import { prisma } from "../prisma";
 import type { Course } from "../types";
 
 export async function saveCourseAction(
@@ -32,16 +32,16 @@ export async function saveCourseAction(
     description: (formData.get("description") as string) || undefined,
   };
 
-  const data = await readData();
-
   if (id) {
-    const index = data.courses.findIndex((c) => c.id === id);
-    if (index !== -1) data.courses[index] = entry;
+    await prisma.course.update({
+      where: { id },
+      data: entry,
+    });
   } else {
-    data.courses.unshift(entry);
+    await prisma.course.create({
+      data: entry,
+    });
   }
-
-  await writeData(data);
   revalidatePath("/");
   revalidatePath("/dashboard/courses");
 
@@ -52,9 +52,9 @@ export async function deleteCourseAction(id: string): Promise<void> {
   const isAuth = await verifySession();
   if (!isAuth) return;
 
-  const data = await readData();
-  data.courses = data.courses.filter((c) => c.id !== id);
-  await writeData(data);
+  await prisma.course.delete({
+    where: { id },
+  });
 
   revalidatePath("/");
   revalidatePath("/dashboard/courses");

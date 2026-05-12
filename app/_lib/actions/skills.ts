@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
+import { prisma } from "../prisma";
 import type { Skill, SkillCategory } from "../types";
 
 const validCategories: SkillCategory[] = [
@@ -32,9 +32,12 @@ export async function saveSkillsAction(
         validCategories.includes(s.category)
     );
 
-    const data = await readData();
-    data.skills = validated;
-    await writeData(data);
+    await prisma.$transaction([
+      prisma.skill.deleteMany(),
+      prisma.skill.createMany({
+        data: validated,
+      }),
+    ]);
 
     revalidatePath("/");
     revalidatePath("/dashboard/skills");

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
+import { prisma } from "../prisma";
 import type { Project } from "../types";
 
 function slugify(text: string): string {
@@ -45,10 +45,8 @@ export async function createProjectAction(
   const title = formData.get("title") as string;
   if (!title) return { error: "Title is required." };
 
-  const data = await readData();
   const project = parseProjectForm(formData);
-  data.projects.push(project);
-  await writeData(data);
+  await prisma.project.create({ data: project });
 
   revalidatePath("/projects");
   revalidatePath("/");
@@ -66,15 +64,18 @@ export async function updateProjectAction(
   const title = formData.get("title") as string;
   if (!title) return { error: "Title is required." };
 
-  const data = await readData();
-  const index = data.projects.findIndex((p) => p.id === id);
-  if (index === -1) return { error: "Project not found." };
+  const existing = await prisma.project.findUnique({ where: { id } });
+  if (!existing) return { error: "Project not found." };
 
-  data.projects[index] = parseProjectForm(formData, id);
-  await writeData(data);
+  const updated = parseProjectForm(formData, id);
+  await prisma.project.update({
+    where: { id },
+    data: updated,
+  });
 
   revalidatePath("/projects");
-  revalidatePath(`/projects/${data.projects[index].slug}`);
+  revalidatePath(`/projects/${existing.slug}`);
+  revalidatePath(`/projects/${updated.slug}`);
   revalidatePath("/");
   redirect("/dashboard/projects");
 }
@@ -83,9 +84,9 @@ export async function deleteProjectAction(id: string): Promise<void> {
   const isAuth = await verifySession();
   if (!isAuth) return;
 
-  const data = await readData();
-  data.projects = data.projects.filter((p) => p.id !== id);
-  await writeData(data);
+  await prisma.project.delete({
+    where: { id },
+  });
 
   revalidatePath("/projects");
   revalidatePath("/");

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
+import { prisma } from "../prisma";
 import type { Education } from "../types";
 
 export async function saveEducationAction(
@@ -33,16 +33,16 @@ export async function saveEducationAction(
     description: (formData.get("description") as string) || undefined,
   };
 
-  const data = await readData();
-
   if (id) {
-    const index = data.education.findIndex((e) => e.id === id);
-    if (index !== -1) data.education[index] = entry;
+    await prisma.education.update({
+      where: { id },
+      data: entry,
+    });
   } else {
-    data.education.unshift(entry);
+    await prisma.education.create({
+      data: entry,
+    });
   }
-
-  await writeData(data);
   revalidatePath("/");
   revalidatePath("/dashboard/education");
 
@@ -53,9 +53,9 @@ export async function deleteEducationAction(id: string): Promise<void> {
   const isAuth = await verifySession();
   if (!isAuth) return;
 
-  const data = await readData();
-  data.education = data.education.filter((e) => e.id !== id);
-  await writeData(data);
+  await prisma.education.delete({
+    where: { id },
+  });
 
   revalidatePath("/");
   revalidatePath("/dashboard/education");

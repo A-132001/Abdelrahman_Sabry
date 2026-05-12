@@ -2,8 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { verifySession } from "../auth";
-import { readData, writeData } from "../store";
-import type { PersonalInfo } from "../types";
+import { prisma } from "../prisma";
 
 export async function updateProfileAction(
   _prev: { success?: boolean; error?: string },
@@ -12,40 +11,43 @@ export async function updateProfileAction(
   const isAuth = await verifySession();
   if (!isAuth) return { error: "Unauthorized" };
 
-  const data = await readData();
+  const profile = await prisma.personalInfo.findFirst();
+  if (!profile) return { error: "Profile not found." };
 
-  const updated: PersonalInfo = {
-    ...data.personalInfo,
-    name: (formData.get("name") as string) || data.personalInfo.name,
-    title: (formData.get("title") as string) || data.personalInfo.title,
-    tagline: (formData.get("tagline") as string) || data.personalInfo.tagline,
-    bio: (formData.get("bio") as string) || data.personalInfo.bio,
-    email: (formData.get("email") as string) || data.personalInfo.email,
-    location:
-      (formData.get("location") as string) || data.personalInfo.location,
-    resumeUrl:
-      (formData.get("resumeUrl") as string) || data.personalInfo.resumeUrl,
-    socialLinks: [
-      {
-        platform: "GitHub",
-        url: (formData.get("github") as string) || "",
-        icon: "github",
-      },
-      {
-        platform: "LinkedIn",
-        url: (formData.get("linkedin") as string) || "",
-        icon: "linkedin",
-      },
-      {
-        platform: "Twitter",
-        url: (formData.get("twitter") as string) || "",
-        icon: "twitter",
-      },
-    ].filter((l) => l.url),
-  };
+  const links = [
+    {
+      platform: "GitHub",
+      url: (formData.get("github") as string) || "",
+      icon: "github",
+    },
+    {
+      platform: "LinkedIn",
+      url: (formData.get("linkedin") as string) || "",
+      icon: "linkedin",
+    },
+    {
+      platform: "Twitter",
+      url: (formData.get("twitter") as string) || "",
+      icon: "twitter",
+    },
+  ].filter((link) => link.url);
 
-  data.personalInfo = updated;
-  await writeData(data);
+  await prisma.personalInfo.update({
+    where: { id: profile.id },
+    data: {
+      name: (formData.get("name") as string) || profile.name,
+      title: (formData.get("title") as string) || profile.title,
+      tagline: (formData.get("tagline") as string) || profile.tagline,
+      bio: (formData.get("bio") as string) || profile.bio,
+      email: (formData.get("email") as string) || profile.email,
+      location: (formData.get("location") as string) || profile.location,
+      resumeUrl: (formData.get("resumeUrl") as string) || profile.resumeUrl,
+      links: {
+        deleteMany: {},
+        create: links,
+      },
+    },
+  });
 
   revalidatePath("/");
   revalidatePath("/dashboard/profile");
